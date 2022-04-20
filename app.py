@@ -1,12 +1,11 @@
 #Modules
-from flask import (
-    Flask, Blueprint, flash, g, redirect, render_template, request, session, url_for
-)
-app = Blueprint('auth', __name__, url_prefix='/auth')
+import flask
+app = flask.Flask(__name__)
+
 
 @app.route('/')
 def index():
     """
     Retourne le contenu de la page index.html
     """
-    return open("index.html").read()
+    return flask.render_template("template.html", title_web="TEEEEEEZ")
