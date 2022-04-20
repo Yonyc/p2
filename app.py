@@ -1,7 +1,8 @@
 #Modules
-from flask import Flask, escape, request
-
-app = Flask(__name__)
+from flask import (
+    Flask, Blueprint, flash, g, redirect, render_template, request, session, url_for
+)
+app = Blueprint('auth', __name__, url_prefix='/auth')
 
 @app.route('/')
 def index():
