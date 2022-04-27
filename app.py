@@ -1,8 +1,8 @@
 #Modules
 import flask
 import os
-from . import db
-from . import auth
+import db_init
+import auth
 
 def create_app():
     """
@@ -14,7 +14,7 @@ def create_app():
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 
-    db.init_app(app)
+    db_init.init_app(app)
 
     app.register_blueprint(auth.bp)
 
