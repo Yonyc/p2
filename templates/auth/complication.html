@@ -1,0 +1,40 @@
+
+
+
+{% extends 'base.html' %}
+
+{% block header %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+  <h1>{% block title %}Complication{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+  <canvas id="graphique" width="200px" height="100px"></canvas>
+    <script>
+      var compl= {{ list_complication |tojson }}
+      for (const [index, element] of compl.entries()) {
+        console.log(element.substr(1,element.length-2));
+        compl[index] = element.substr(1,element.length-2)
+      }
+      var ctx = document.getElementById('graphique').getContext('2d');
+      var myChart = new Chart(ctx, {
+      type: 'bar',
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero:true
+            },
+          }],
+        },
+      },
+      data: { 
+      labels: compl,
+      datasets: [{
+                    label: 'Nombre de cas',
+                    data: {{nb_complication}}
+                   }]
+	            }
+        }
+	    );
+    </script>
+{% endblock %}
