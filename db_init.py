@@ -6,8 +6,8 @@ from flask import current_app, g
 from flask.cli import with_appcontext
 
 # Définition des fonctions
-
 def get_db():
+    print(current_app.config['DATABASE'])
     if 'db' not in g:
         g.db = sqlite3.connect(
             current_app.config['DATABASE'],
