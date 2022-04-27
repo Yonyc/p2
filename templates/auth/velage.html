@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+  <h1>{% block title %}Deroulant{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+    
+    <form action='#' method="post">
+        <div class="input-group">
+            <select name="Famille" id="Select_famille">
+                <option value="Toutes les familles">Toutes les familles</option>
+                {% for famille in fam %}
+                    <option value="{{famille}}">{{famille}}</option>
+                {% endfor %}
+            </select>
+            <select name="Sexe" id="Select_sexe">
+                <option value="Male et femelle">Male et femelle</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+            <select name="Année" id="Select_année">
+                <option value="Toutes les années">Toutes les années</option>
+                {% for ans in année %}
+                    <option value="{{ans}}">{{ans}}</option>
+                {% endfor %}
+            </select>
+            <select name="Mois" id="Select_mois">
+                <option value="Tous les mois">Tous les mois</option>
+                <option value="Janvier">Janvier</option>
+                <option value="Février">Février</option>
+                <option value="Mars">Mars</option>
+                <option value="Avril">Avril</option>
+                <option value="Mai">Mai</option>
+                <option value="Juin">Juin</option>
+                <option value="Juillet">Juillet</option>
+                <option value="Août">Août</option>
+                <option value="Septembre">Septembre</option>
+                <option value="Octobre">Octobre</option>
+                <option value="Novembre">Novembre</option>
+                <option value="Décembre">Décembre</option> 
+            </select>
+        </div>
+    
+        <input type="submit" value="Afficher graphique">
+    </form>
+
+
+{% endblock %}
+
+
