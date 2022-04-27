@@ -1,11 +1,16 @@
 #Modules
 import flask
-app = flask.Flask(__name__)
+from . import db
+from . import auth
 
+def create_app():
+    """
+    Fonction permettant de créer l'app flask.
+    """
+    app = flask.Flask(__name__, instance_relative_config=True)
 
-@app.route('/')
-def index():
-    """
-    Retourne le contenu de la page index.html
-    """
-    return flask.render_template("template.html", title_web="TEEEEEEZ")
+    db.init_app(app)
+
+    app.register_blueprint(auth.bp)
+
+    return app
