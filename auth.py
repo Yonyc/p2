@@ -23,6 +23,26 @@ def test():
 
     return render_template('auth/test.html', data = data, Male = Male,Female = Female)
 
+@bp.route('/complication', methods=('GET', 'POST'))
+def complication():
+    list_complication = []
+    list_complication_id = []
+    nb_complication = []
+    db = get_db()
+    cur =  db.execute('SELECT * FROM complications')
+    data = cur.fetchall()
+    for dat in data:
+        list_complication.append('"'+dat[1]+'"')
+        list_complication_id.append(dat[0])
+    print(list_complication)
+    print(list_complication_id)
+    for element in list_complication_id:
+        curr = db.execute('SELECT * FROM velages_complications WHERE complication_id = "{}"'.format(element))
+        nb_db = curr.fetchall()
+        nb_complication.append(len(nb_db))
+    return render_template('auth/complication.html',data = data,nb_complication = nb_complication,list_complication = list_complication)
+
+
 
 
 
