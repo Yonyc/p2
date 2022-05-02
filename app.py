@@ -27,9 +27,10 @@ app = create_app()
 @app.route("/")
 def index():
     """
-    Fonction permettant d'aider l'utilisateur
+    Fonction permettant d'aider l'utilisateur à accéder aux URL
+    du site web lorsque celui-ci se trouve à la racine.
     """
-    return "<p>Cliquer <a href='{0}'>ICI</a> pour accéder au site web de la ferme des 3 chênes.</p>".format("/auth/velage")
+    return "<p>Cliquer <a href='{0}'>ICI</a> pour accéder au site web de la ferme des 3 chênes.</p>".format("/auth/")
 
 # Permet de lancer l'application en exécutant simplement le fichier python 'app.py':
 if __name__ == "__main__":

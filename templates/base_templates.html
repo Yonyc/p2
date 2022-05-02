@@ -9,30 +9,31 @@
     </head>
 
     <body>
-      <nav>
-        <h1>Ferme des 3 Chênes</h1>
+        <nav>
+            <h1>Ferme des 3 Chênes</h1>
 
-        <ul>
-          <li><a href="{{ url_for('auth.gender') }}">Diversité des genres</a></li>
-          <li><a href="{{ url_for('auth.complication') }}">Complications</a></li>
-          <li><a href="{{ url_for('auth.velage') }}">Graphiques</a></li>
-        </ul>
-      </nav>
+            <ul>
+                <li><a href="{{ url_for('auth.index') }}">Accueil</a></li>
+                <li><a href="{{ url_for('auth.gender') }}">Diversité des genres</a></li>
+                <li><a href="{{ url_for('auth.complication') }}">Complications</a></li>
+                <li><a href="{{ url_for('auth.velage') }}">Graphiques</a></li>
+            </ul>
+        </nav>
 
-      <section class="content">
-        <header>
-          {% block header %}{% endblock %}
-        </header>
+        <section class="content">
+            <header>
+                {% block header %}{% endblock %}
+            </header>
 
-        {% for message in get_flashed_messages() %}
-        <div class="flash">
-          
-          {{ message }}
+            {% for message in get_flashed_messages() %}
+            <div class="flash">
+              
+                {{ message }}
 
-        </div>
-        {% endfor %}
-        {% block content %}{% endblock %}
-      </section>
+            </div>
+            {% endfor %}
+            {% block content %}{% endblock %}
+        </section>
     </body>
 
 </html>

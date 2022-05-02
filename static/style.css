@@ -132,10 +132,21 @@ input[type=submit] {
     min-height: 12em; 
     resize: vertical; 
 }
+.homeimg{
+    max-height : 500px;
+    text-align: center;
+}
 
 
 /* Stylisation des ID */
 
 #graphiqueGenre{
     max-height: 80%;
+}
+
+#img1{
+    margin-right : 10px;
+}
+#img2{
+    margin-left : 10px;
 }
