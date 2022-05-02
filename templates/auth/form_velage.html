@@ -1,0 +1,36 @@
+<form action='#' method="post">
+
+    <div class="input-group">
+        <select name="Famille" id="Select_famille">
+            <option value="Toutes les familles">Toutes les familles</option>
+            {% for famille in fam %}
+                <option value="{{famille}}">{{famille}}</option>
+            {% endfor %}
+        </select>
+
+        <select name="Sexe" id="Select_sexe">
+            {% for nb, sex in sexs.items() %}
+                <option value="{{nb}}">{{sex}}</option>
+            {% endfor %}
+        </select>
+
+        <select name="Année" id="Select_année">
+            <option value="Toutes les années">Toutes les années</option>
+            {% for ans in annee %}
+                <option value="{{ans}}">{{ans}}</option>
+            {% endfor %}
+        </select>
+
+        <select name="Mois" id="Select_mois">
+            {% for nb, month in months.items() %}
+                <option value="{{nb}}">{{month}}</option>
+            {% endfor %}
+        </select>
+        
+    </div>
+
+    <div class="submitgraph">
+        <input type="submit" class="submitgraph" value="Afficher graphique">
+    </div>
+
+</form>

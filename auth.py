@@ -6,6 +6,44 @@ from flask import (
 
 from db_init import get_db,init_db
 
+months = {
+    0: "Tous",
+    1: "Janvier",
+    2: "Février",
+    3: "Mars",
+    4: "Avril",
+    5: "Mai",
+    6: "Juin",
+    7: "Juillet",
+    8: "Août",
+    9: "Septembre",
+    10: "Octobre",
+    11: "Novembre",
+    12: "Décenbre"
+}
+
+sexes = {
+    "B": "Male et Femelle",
+    "M": "Mâle",
+    "F": "Femelle"
+}
+
+def renderForms():
+    year = []
+    fam = []
+    db = get_db()
+    cur =  db.execute('SELECT * FROM velages')
+    for velage in cur.fetchall():
+        ans = int(velage[3][6:])
+        if ans not in year:
+            year.append(ans)
+    year.sort()
+    cur =  db.execute('SELECT * FROM familles')
+    for famille in cur.fetchall():
+        fam.append(famille[1])
+    fam.sort()
+    return year, fam
+
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -45,59 +83,17 @@ def complication():
 def velage():
 
     if request.method == 'POST':
-        print('clicked')
-        print(request.form.get("Famille"))
-        print(request.form.get("Sexe"))
-        print(request.form.get("Année"))
-        print(request.form.get("Mois"))
-        Famille = request.form.get("Famille")
-        Sexe = request.form.get("Sexe")
-        Année = request.form.get("Année")
-        Mois  = request.form.get("Mois")
-        return redirect(url_for("auth.affich_graph",Famille = Famille,Sexe = Sexe,Mois = Mois, Ans = Année))
+        return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Année")))
     else:
-        année = []
-        fam = []
-        db = get_db()
-        cur =  db.execute('SELECT * FROM velages')
-        for velage in cur.fetchall():
-            ans = int(velage[3][6:])
-            if ans not in année:
-                année.append(ans)
-        année.sort()
-        cur =  db.execute('SELECT * FROM familles')
-        for famille in cur.fetchall():
-            fam.append(famille[1])
-        fam.sort()
-        return render_template('auth/velage.html', année = année, fam = fam)
+        annee, fam = renderForms()
+        return render_template('auth/velage.html', form=render_template('auth/form_velage.html', annee = annee, fam = fam, months=months, sexs=sexes))
 
 @bp.route("/<Famille>/<Sexe>/<Mois>/<Ans>", methods=('GET', 'POST'))
 def affich_graph(Famille, Sexe,Mois,Ans):
     if request.method == 'POST':
-        print('clicked')
-        print(request.form.get("Famille"))
-        print(request.form.get("Sexe"))
-        print(request.form.get("Année"))
-        print(request.form.get("Mois"))
-        Famille = request.form.get("Famille")
-        Sexe = request.form.get("Sexe")
-        Année = request.form.get("Année")
-        Mois  = request.form.get("Mois")
-        return redirect(url_for("auth.affich_graph",Famille = Famille, Sexe = Sexe,Mois = Mois,Ans = Année))
+        return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Année")))
     else:
-        année = []
-        fam = []
-        db = get_db()
-        cur =  db.execute('SELECT * FROM velages')
-        for velage in cur.fetchall():
-            ans = int(velage[3][6:])
-            if ans not in année:
-                année.append(ans)
-        année.sort()
-        cur =  db.execute('SELECT * FROM familles')
-        for famille in cur.fetchall():
-            fam.append(famille[1])
-        fam.sort()
+        annee, fam = renderForms()
 
         #suite 
         vel = []
@@ -115,4 +111,4 @@ def affich_graph(Famille, Sexe,Mois,Ans):
                 vel.append(velage[2])
             nb_complication = [vel.count(1),vel.count(2),vel.count(3),vel.count(4),vel.count(5),vel.count(6),vel.count(7),vel.count(8),vel.count(9)]
             print(nb_complication)
-    return render_template('auth/afiche.html',Famille = Famille , Sexe = Sexe, année = année, fam = fam,Mois = Mois,Ans = Ans)
+    return render_template('auth/afiche.html', form=render_template('auth/form_velage.html', annee = annee, fam = fam, months=months, sexs=sexes))
