@@ -1,15 +1,13 @@
-
-
-
 {% extends 'base_templates.html' %}
 
 {% block header %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
-  <h1>{% block title %}Complications{% endblock %}</h1>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+    <h1 class="pageTitle">{% block title %}Complications{% endblock %}</h1>
 {% endblock %}
+
 {% block content %}
-  <canvas id="graphique" width="200px" height="100px"></canvas>
-    <script>
+<canvas id="graphique" width="200px" height="100px"></canvas>
+  <script>
       var compl= {{ list_complication |tojson }}
       for (const [index, element] of compl.entries()) {
         console.log(element.substr(1,element.length-2));
@@ -32,9 +30,9 @@
       datasets: [{
                     label: 'Nombre de cas',
                     data: {{nb_complication}}
-                   }]
-	            }
+                  }]
+              }
         }
-	    );
-    </script>
+      );
+  </script>
 {% endblock %}
