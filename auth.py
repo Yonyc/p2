@@ -74,9 +74,10 @@ def gender():
     # Requête SQL : On récupère tous les animaux de sexe F 
     cur =  db.execute('SELECT * FROM animaux WHERE sexe = "F"')
     data = cur.fetchall()
-    Female = len(data)    
+    Female = len(data)
+    print(Female)    
 
-    return render_template('auth/gender.html', data = data, Male = Male,Female = Female)
+    return render_template('auth/gender.html', data = data, Male = Male, Female = Female)
 
 
 @bp.route('/complication', methods=('GET', 'POST'))

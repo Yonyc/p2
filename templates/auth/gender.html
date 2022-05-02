@@ -1,37 +1,30 @@
 {% extends 'base_templates.html' %}
 
 {% block header %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
-<h1 class="pageTitle">{% block title %}Diversité des Genres{% endblock %}</h1>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <h1 class="pageTitle">{% block title %}Diversité des Genres{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
     {% for dat in data %}
         <script>
-            console.log({{dat.sexe}})
+            // console.log({{dat.sexe}})
         </script>
     {% endfor %}
     <p class="sstitle">Nombre de mâles et de femelles</p>
-    <canvas id="graphique" width="300px" height="100px"></canvas>
+    <canvas id="graphiqueGenre" width="300px" height="100px"></canvas>
     <script>
-        var ctx = document.getElementById('graphique').getContext('2d');
-        console.log('gender');
+        var ctx = document.getElementById('graphiqueGenre').getContext('2d');
+        // console.log('gender');
         var myChart = new Chart(ctx, {
-            type: 'bar',
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        },
-                    }],
-                },
-            },
+            type: 'pie',
             data: { 
                 labels: ['Male', 'Female'],
                 datasets: [{
                     label: 'Number',
-                    data: [{{Male}},{{Female}}]
+                    backgroundColor: ['rgb(54, 162, 235)','rgb(255, 99, 132)'],
+                    hoverOffset: 1,
+                    data: [{{Male}}, {{Female}}]
                 }]
             }
         });
