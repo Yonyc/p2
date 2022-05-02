@@ -38,17 +38,20 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 def renderForms():
     """
-    
+    Fonction permettant de récupérer à l'aide d'une requpête SQL toutes 
+    les familles ainsi que toutes les années des velages.
     """
     year = []
     fam = []
     db = get_db()
+    # Requête SQL : On récupère tous les velages
     cur =  db.execute('SELECT * FROM velages')
     for velage in cur.fetchall():
         ans = int(velage[3][6:])
         if ans not in year:
             year.append(ans)
     year.sort()
+    # Requête SQL : On récupère toutes les familles
     cur =  db.execute('SELECT * FROM familles')
     for famille in cur.fetchall():
         fam.append(famille[1])
