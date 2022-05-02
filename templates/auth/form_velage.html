@@ -2,7 +2,7 @@
 
     <div class="input-group">
         <select name="Famille" id="Select_famille">
-            <option value="Toutes les familles">Toutes les familles</option>
+            <option value="all_families" selected>Toutes les familles</option>
             {% for famille in fam %}
                 <option value="{{famille}}">{{famille}}</option>
             {% endfor %}
@@ -14,8 +14,8 @@
             {% endfor %}
         </select>
 
-        <select name="Année" id="Select_année">
-            <option value="Toutes les années">Toutes les années</option>
+        <select name="Annee" id="Select_année">
+            <option value="all_years" selected>Toutes les années</option>
             {% for ans in annee %}
                 <option value="{{ans}}">{{ans}}</option>
             {% endfor %}
@@ -30,8 +30,8 @@
         <h1>Choix du graphique à montrer</h1>
         <select name="Graphique" id="Select_graphique">
             <option value="velage">Nombre de vêlages par jours sur la période</option>
-            <option value="lune">Graphique de naissance en fonction de la période de pleine lune.</option>
-            <option value="race">Distibution des races.</option>
+            <option value="lune">Graphique de naissance en fonction de la période de pleine lune</option>
+            <option value="race">Distibution des races</option>
         </select>
 
         <div class="submitgraph">

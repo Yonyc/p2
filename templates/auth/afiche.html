@@ -6,7 +6,7 @@
 {% endblock %}
 {% block content %}
     {% autoescape off %}
-    {{ form }}
+    {{form}}
     {% endautoescape %}
     <script>
         var select = document.getElementById('Select_famille');
@@ -20,8 +20,32 @@
         
     </script>
     <label>Famille : {{Famille}}</label><br>
-    <label>Sexe : {{Sexe}}</label><br>
+    <label>Sexe : {{Sexe_txt}}</label><br>
     <label>Année : {{Ans}}</label><br>
-    <label>Mois : {{Mois}}</label><br>
+    <label>Mois : {{Mois_txt}}</label><br>
+    <label>Graphique : {{Graph_name}}</label><br>
+    {% if error %}
+        <div><span style="color: red;">{{error}}</span></div>
+    {% else %}<canvas id="graph" width="300px" height="100px"></canvas>
+        <script>
+            var ctx = document.getElementById('graph').getContext('2d');
+            // console.log('gender');
+            let data = {{data|tojson}};
+            console.log(data);
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: { 
+                    labels: [],
+                    datasets: [{
+                        label: 'Number',
+                        backgroundColor: ['rgb(54, 162, 235)','rgb(255, 99, 132)'],
+                        hoverOffset: 1,
+                        data: [{{Male}}, {{Female}}]
+                    }]
+                }
+            });
+        </script>
+    {% endif %}
+    
 
 {% endblock %}

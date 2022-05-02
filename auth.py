@@ -74,12 +74,10 @@ def gender():
     cur =  db.execute('SELECT * FROM animaux WHERE sexe = "M"')
     data = cur.fetchall()
     Male = len(data)
-    print(Male)
     # Requête SQL : On récupère tous les animaux de sexe F 
     cur =  db.execute('SELECT * FROM animaux WHERE sexe = "F"')
     data = cur.fetchall()
     Female = len(data)
-    print(Female)    
 
     return render_template('auth/gender.html', data = data, Male = Male, Female = Female)
 
@@ -117,39 +115,55 @@ def velage():
     qui permet à l'utilisateur de former des graphiques.
     """
     if request.method == 'POST':
-        return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Année")))
+        return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Annee"), Graph=request.form.get("Graphique")))
     else:
         annee, fam = renderForms()
         return render_template('auth/velage.html', form=render_template('auth/form_velage.html', annee = annee, fam = fam, months=months, sexs=sexes))
 
 
-@bp.route("/<Famille>/<Sexe>/<Mois>/<Ans>", methods=('GET', 'POST'))
-def affich_graph(Famille,Sexe,Mois,Ans):
+@bp.route("/<Famille>/<Sexe>/<Mois>/<Ans>/<Graph>", methods=('GET', 'POST'))
+def affich_graph(Famille,Sexe,Mois,Ans,Graph):
     """
     Fonction permettant à l'utilisateur d'afficher les graphiques au moyen de
     l'interface disponible sur la page 'Graphiques'.
     """
     if request.method == 'POST':
-        return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Année")))
+        return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Annee"), Graph=request.form.get("Graphique")))
     else:
         annee, fam = renderForms()
-        vel = []
-        list_complication = ['"Aide vétérinaire au vêlage"', '"Vêlage difficile"', '"Mère avec post complication"', '"Veau trop petit à la naissance"', '"Veau mal placé"', '"Vêlage plus tôt que prévu"', '"Veau trop gros à la naissance"', '"Veau avec post complication"', '"Veau mal formé"']
-        
-        if Famille == "Toutes les familles" and Sexe == "Male et femelle" and Ans == "Toutes les années" and Mois == "Tous les mois":
-            # Requête SQL :
-            cur = db.execute("SELECT velages.id, velages.date, velages_complications.complication_id FROM velages INNER JOIN velages_complications ON velages.id = velages_complications.velage_id")
-            for velage in cur.fetchall():
-                vel.append(velage[2])
-            nb_complication = [vel.count(1),vel.count(2),vel.count(3),vel.count(4),vel.count(5),vel.count(6),vel.count(7),vel.count(8),vel.count(9)]
-            print(nb_complication)
-            
-        elif Famille != "Toutes les familles" and Sexe == "Male et femelle" and Ans == "Toutes les années" and Mois == "Tous les mois":
-            # Requête SQL :
-            cur = db.execute("SELECT velages.id, velages.date, velages_complications.complication_id FROM velages INNER JOIN velages_complications ON velages.id = velages_complications.velage_id ")
-            for velage in cur.fetchall():
-                vel.append(velage[2])
-            nb_complication = [vel.count(1),vel.count(2),vel.count(3),vel.count(4),vel.count(5),vel.count(6),vel.count(7),vel.count(8),vel.count(9)]
-            print(nb_complication)
+        db = get_db()
 
-    return render_template('auth/afiche.html', form=render_template('auth/form_velage.html', annee = annee, fam = fam, months=months, sexs=sexes))
+
+        data = []
+        joins = []
+        def addJoin(table, car1, car2):
+            sql = "INNER JOIN " + table + " ON " + car1 + " = " + car2
+            if sql not in joins:
+                joins.append(sql)
+        addJoin("animaux_velages", "velages.id", "animaux_velages.velage_id")
+        addJoin("animaux", "animaux_velages.animal_id", "animaux.id")
+        addJoin("familles", "animaux.famille_id", "familles.id")
+
+        conds = []
+        if Famille != "all_families":
+            conds.append("familles.nom = \"" + Famille + "\"")
+
+        if Sexe != "B":
+            conds.append("animaux.sexe = \"" + Sexe + "\"")
+
+        if Mois != "0":
+            conds.append("substr(`velages`.`date`, 4, 2) = \"" + Mois.zfill(2) + "\"")
+
+        if Ans != "all_years":
+            conds.append("substr(`velages`.`date`, 7, 4) = \"" + Ans.zfill(4) + "\"")
+
+        req = "SELECT velages.date, animaux.sexe, familles.nom FROM velages " + (" ".join(joins) if len(joins) > 0 else "") + ((" WHERE " + " AND ".join(conds)) if len(conds) > 0 else "") + ";"
+        err=None
+        try:
+            res = db.execute(req).fetchall()
+            for animal in res:
+                data.append([x for x in animal])
+        except Exception as e:
+            err="Request error: " + req  + "<br>" + str(e) + "<br>"
+
+    return render_template('auth/afiche.html', data=data, error=err, Famille=Famille, Sexe=Sexe, Sexe_txt=sexes[Sexe], Ans=Ans, Mois=Mois, Mois_txt=months[int(Mois)], Graph_name=Graph, form=render_template('auth/form_velage.html', annee = annee, fam = fam, months=months, sexs=sexes, graph_name=Graph))
