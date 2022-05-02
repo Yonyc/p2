@@ -58,6 +58,10 @@ def renderForms():
     fam.sort()
     return year, fam
 
+@bp.route("/")
+def index():
+    return render_template("auth/index.html")
+
 @bp.route('/gender', methods=('GET', 'POST'))
 def gender():
     """
