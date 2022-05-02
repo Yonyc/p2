@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
         <title> P2 </title>
-
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
@@ -11,28 +11,26 @@
     <body>
 
         <nav>
+
             <h1>Ferme des 3 Chênes</h1>
+
             <ul>
-              {% if g.user %}
-                <li><span>{{ g.user['username'] }}</span>
-                <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-              {% else %}
                 <li><a href="{{ url_for('auth.test') }}">test</a>
                 <li><a href="{{ url_for('auth.complication') }}">complication</a>
                 <li><a href="{{ url_for('auth.velage') }}">velage</a>
-                
-              {% endif %}
             </ul>
-          </nav>
-          <section class="content">
+
+        </nav>
+
+        <section class="content">
             <header>
-              {% block header %}{% endblock %}
+                {% block header %}{% endblock %}
             </header>
             {% for message in get_flashed_messages() %}
-              <div class="flash">{{ message }}</div>
+            <div class="flash">{{ message }}</div>
             {% endfor %}
             {% block content %}{% endblock %}
-          </section>
+        </section>
 
     </body>
 
