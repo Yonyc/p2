@@ -1,5 +1,4 @@
 # Importation des modules
-
 import functools
 
 from flask import (
@@ -27,7 +26,7 @@ months = {
 }
 
 sexes = {
-    "B": "Male et Femelle",
+    "B": "Mâle et Femelle",
     "M": "Mâle",
     "F": "Femelle"
 }
@@ -46,6 +45,7 @@ def renderForms():
     db = get_db()
     # Requête SQL : On récupère tous les velages
     cur =  db.execute('SELECT * FROM velages')
+    
     for velage in cur.fetchall():
         ans = int(velage[3][6:])
         if ans not in year:
@@ -53,13 +53,19 @@ def renderForms():
     year.sort()
     # Requête SQL : On récupère toutes les familles
     cur =  db.execute('SELECT * FROM familles')
+
     for famille in cur.fetchall():
         fam.append(famille[1])
     fam.sort()
+
     return year, fam
 
 @bp.route("/")
 def index():
+    """
+    Fonction permettant de rendre la page d'accueil en chargeant le fichier
+    index.html lorsque l'utilisateur se trouve dans auth/.
+    """
     return render_template("auth/index.html")
 
 @bp.route('/gender', methods=('GET', 'POST'))
@@ -96,15 +102,18 @@ def complication():
     # Requête SQL : On récupère toutes les données de la table des complications enregistrés
     cur =  db.execute('SELECT * FROM complications')
     data = cur.fetchall()
+
     for dat in data:
         list_complication.append('"'+dat[1]+'"')
         list_complication_id.append(dat[0])
     print(list_complication)
     print(list_complication_id)
+
     for element in list_complication_id:
         curr = db.execute('SELECT * FROM velages_complications WHERE complication_id = "{}"'.format(element))
         nb_db = curr.fetchall()
         nb_complication.append(len(nb_db))
+
     return render_template('auth/complication.html',data = data,nb_complication = nb_complication,list_complication = list_complication)
 
 
@@ -132,18 +141,25 @@ def affich_graph(Famille,Sexe,Mois,Ans,Graph):
     else:
         annee, fam = renderForms()
         db = get_db()
-
-
         data = []
         joins = []
+
         def addJoin(table, car1, car2):
+            """
+            Fonction permettant de faire des INNER JOIN SQL, elle permet surtout
+            d'éviter d'avoir de la redondance de code et de rendre plus compréhensible 
+            la/les requêtes.
+            """
             sql = "INNER JOIN " + table + " ON " + car1 + " = " + car2
             if sql not in joins:
                 joins.append(sql)
+
         addJoin("animaux_velages", "velages.id", "animaux_velages.velage_id")
         addJoin("animaux", "animaux_velages.animal_id", "animaux.id")
         addJoin("familles", "animaux.famille_id", "familles.id")
 
+        # Ici on définis les conditions que nous allons utiliser pour les requêtes,
+        # ces conditions seront ajoutés après un WHERE.
         conds = []
         if Famille != "all_families":
             conds.append("familles.nom = \"" + Famille + "\"")
@@ -157,7 +173,9 @@ def affich_graph(Famille,Sexe,Mois,Ans,Graph):
         if Ans != "all_years":
             conds.append("substr(`velages`.`date`, 7, 4) = \"" + Ans.zfill(4) + "\"")
 
+        # Requête SQL : Enfin, on fait la requête de sélection auquel on ajoute (ou pas) un/des INNER JOIN et (ou pas) un/des WHERE comme conditions.
         req = "SELECT velages.date, animaux.sexe, familles.nom FROM velages " + (" ".join(joins) if len(joins) > 0 else "") + ((" WHERE " + " AND ".join(conds)) if len(conds) > 0 else "") + ";"
+        
         err=None
         try:
             res = db.execute(req).fetchall()
