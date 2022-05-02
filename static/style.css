@@ -1,3 +1,5 @@
+/* Stylisation des balises */
+
 html { 
     font-family: sans-serif; 
     background: #222738; 
@@ -52,13 +54,27 @@ input[type=submit] {
     margin-left: auto;
     margin-right: auto;
 }
+
+
+/* Stylisation des classes */
+
 .pageTitle{
     text-align: center;
+}
+.sstitle{
+    font-size: 1.2em;
+    font-weight: bold; 
+    text-align: center;
+    margin-top : 25px;
+    margin-bottom : 25px;
 }
 .input-group{
     text-align: center;
     margin-top: 10px;
     margin-bottom: 20px;
+}
+.submitgraph{
+    margin-top: 25px;
 }
 .content { 
     padding: 0 1rem 1rem; 
@@ -76,7 +92,7 @@ input[type=submit] {
     margin: 1em 0; 
     padding: 1em; 
     background: #cae6f6;
-     border: 1px solid #377ba8; 
+    border: 1px solid #377ba8; 
 }
 .post > header { 
     display: flex; 
@@ -116,3 +132,6 @@ input[type=submit] {
     min-height: 12em; 
     resize: vertical; 
 }
+
+
+/* Stylisation des ID */

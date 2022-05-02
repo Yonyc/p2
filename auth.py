@@ -32,6 +32,8 @@ sexes = {
     "F": "Femelle"
 }
 
+bp = Blueprint('auth', __name__, url_prefix='/auth')
+
 # Déclarations des fonctions de l'application
 
 def renderForms():
@@ -53,36 +55,39 @@ def renderForms():
     fam.sort()
     return year, fam
 
-
-bp = Blueprint('auth', __name__, url_prefix='/auth')
-
-
-@bp.route('/test', methods=('GET', 'POST'))
-def test():
+@bp.route('/gender', methods=('GET', 'POST'))
+def gender():
     """
-
+    Fonction permettant de récupérer les données et de faire la requête SQL nous
+    permettant d'afficher un graphique sur la diversité des genres. Ceci est notre 
+    première fonctionnalité supplémentaire.
     """
     db = get_db()
+    # Requête SQL : On récupère tous les animaux de sexe M
     cur =  db.execute('SELECT * FROM animaux WHERE sexe = "M"')
     data = cur.fetchall()
     Male = len(data)
     print(Male)
+    # Requête SQL : On récupère tous les animaux de sexe F 
     cur =  db.execute('SELECT * FROM animaux WHERE sexe = "F"')
     data = cur.fetchall()
     Female = len(data)    
 
-    return render_template('auth/test.html', data = data, Male = Male,Female = Female)
+    return render_template('auth/gender.html', data = data, Male = Male,Female = Female)
 
 
 @bp.route('/complication', methods=('GET', 'POST'))
 def complication():
     """
-
+    Fonction permettant de récupérer les données et de faire la requête SQL nous
+    permettant d'afficher un graphique des complications. Ceci est notre deuxième
+    fonctionnalité supplémentaire.
     """
     list_complication = []
     list_complication_id = []
     nb_complication = []
     db = get_db()
+    # Requête SQL : On récupère toutes les données de la table des complications enregistrés
     cur =  db.execute('SELECT * FROM complications')
     data = cur.fetchall()
     for dat in data:
@@ -100,7 +105,8 @@ def complication():
 @bp.route('/velage', methods=('GET', 'POST'))
 def velage():
     """
-
+    Fonction permettant de gérer l'accès à la page où est situé l'interface
+    qui permet à l'utilisateur de former des graphiques.
     """
     if request.method == 'POST':
         return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Année")))
@@ -110,29 +116,32 @@ def velage():
 
 
 @bp.route("/<Famille>/<Sexe>/<Mois>/<Ans>", methods=('GET', 'POST'))
-def affich_graph(Famille, Sexe,Mois,Ans):
+def affich_graph(Famille,Sexe,Mois,Ans):
     """
-    
+    Fonction permettant à l'utilisateur d'afficher les graphiques au moyen de
+    l'interface disponible sur la page 'Graphiques'.
     """
     if request.method == 'POST':
         return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Année")))
     else:
         annee, fam = renderForms()
-
-        #suite 
         vel = []
         list_complication = ['"Aide vétérinaire au vêlage"', '"Vêlage difficile"', '"Mère avec post complication"', '"Veau trop petit à la naissance"', '"Veau mal placé"', '"Vêlage plus tôt que prévu"', '"Veau trop gros à la naissance"', '"Veau avec post complication"', '"Veau mal formé"']
+        
         if Famille == "Toutes les familles" and Sexe == "Male et femelle" and Ans == "Toutes les années" and Mois == "Tous les mois":
-            cur =  db.execute("SELECT velages.id, velages.date, velages_complications.complication_id FROM velages INNER JOIN velages_complications ON velages.id = velages_complications.velage_id")
+            # Requête SQL :
+            cur = db.execute("SELECT velages.id, velages.date, velages_complications.complication_id FROM velages INNER JOIN velages_complications ON velages.id = velages_complications.velage_id")
             for velage in cur.fetchall():
                 vel.append(velage[2])
             nb_complication = [vel.count(1),vel.count(2),vel.count(3),vel.count(4),vel.count(5),vel.count(6),vel.count(7),vel.count(8),vel.count(9)]
             print(nb_complication)
             
         elif Famille != "Toutes les familles" and Sexe == "Male et femelle" and Ans == "Toutes les années" and Mois == "Tous les mois":
-            cur =  db.execute("SELECT velages.id, velages.date, velages_complications.complication_id FROM velages INNER JOIN velages_complications ON velages.id = velages_complications.velage_id ")
+            # Requête SQL :
+            cur = db.execute("SELECT velages.id, velages.date, velages_complications.complication_id FROM velages INNER JOIN velages_complications ON velages.id = velages_complications.velage_id ")
             for velage in cur.fetchall():
                 vel.append(velage[2])
             nb_complication = [vel.count(1),vel.count(2),vel.count(3),vel.count(4),vel.count(5),vel.count(6),vel.count(7),vel.count(8),vel.count(9)]
             print(nb_complication)
+
     return render_template('auth/afiche.html', form=render_template('auth/form_velage.html', annee = annee, fam = fam, months=months, sexs=sexes))
