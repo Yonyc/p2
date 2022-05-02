@@ -1,3 +1,5 @@
+# Importation des modules
+
 import functools
 
 from flask import (
@@ -5,6 +7,8 @@ from flask import (
 )
 
 from db_init import get_db,init_db
+
+# Déclaration des variables
 
 months = {
     0: "Tous",
@@ -28,7 +32,12 @@ sexes = {
     "F": "Femelle"
 }
 
+# Déclarations des fonctions de l'application
+
 def renderForms():
+    """
+    
+    """
     year = []
     fam = []
     db = get_db()
@@ -47,8 +56,12 @@ def renderForms():
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+
 @bp.route('/test', methods=('GET', 'POST'))
 def test():
+    """
+
+    """
     db = get_db()
     cur =  db.execute('SELECT * FROM animaux WHERE sexe = "M"')
     data = cur.fetchall()
@@ -60,8 +73,12 @@ def test():
 
     return render_template('auth/test.html', data = data, Male = Male,Female = Female)
 
+
 @bp.route('/complication', methods=('GET', 'POST'))
 def complication():
+    """
+
+    """
     list_complication = []
     list_complication_id = []
     nb_complication = []
@@ -79,17 +96,24 @@ def complication():
         nb_complication.append(len(nb_db))
     return render_template('auth/complication.html',data = data,nb_complication = nb_complication,list_complication = list_complication)
 
+
 @bp.route('/velage', methods=('GET', 'POST'))
 def velage():
+    """
 
+    """
     if request.method == 'POST':
         return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Année")))
     else:
         annee, fam = renderForms()
         return render_template('auth/velage.html', form=render_template('auth/form_velage.html', annee = annee, fam = fam, months=months, sexs=sexes))
 
+
 @bp.route("/<Famille>/<Sexe>/<Mois>/<Ans>", methods=('GET', 'POST'))
 def affich_graph(Famille, Sexe,Mois,Ans):
+    """
+    
+    """
     if request.method == 'POST':
         return redirect(url_for("auth.affich_graph",Famille = request.form.get("Famille"), Sexe = request.form.get("Sexe"),Mois = request.form.get("Mois"),Ans = request.form.get("Année")))
     else:

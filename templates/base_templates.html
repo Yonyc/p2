@@ -9,9 +9,7 @@
     </head>
 
     <body>
-
       <nav>
-
         <h1>Ferme des 3 Chênes</h1>
 
         <ul>
@@ -19,11 +17,9 @@
           <li><a href="{{ url_for('auth.complication') }}">complication</a></li>
           <li><a href="{{ url_for('auth.velage') }}">velage</a></li>
         </ul>
-
       </nav>
 
       <section class="content">
-
         <header>
           {% block header %}{% endblock %}
         </header>
@@ -37,7 +33,6 @@
         {% endfor %}
         {% block content %}{% endblock %}
       </section>
-
     </body>
 
 </html>

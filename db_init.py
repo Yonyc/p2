@@ -7,6 +7,9 @@ from flask.cli import with_appcontext
 
 # Définition des fonctions
 def get_db():
+    """
+    Fonction permettant de récupérer de la base de données en SQLite. On établit sa connexion.
+    """
     print(current_app.config['DATABASE'])
     if 'db' not in g:
         g.db = sqlite3.connect(
@@ -19,6 +22,9 @@ def get_db():
 
 
 def close_db(e=None):
+    """
+    Fonction permettant de fermer la connexion avec la base de données.
+    """
     db = g.pop('db', None)
 
     if db is not None:
@@ -57,11 +63,15 @@ def init_db():
 
 def init_db_command():
     """
-    Initialise la base de données.
+    Fonction permettant de confirmer l'initialisation à la base de données,
+    on appelle la fonction init_db()
     """
     init_db()
     click.echo('Initialized the database.')
 
 def init_app(app):
+    """
+    Fonction permettant d'initialiser l'application.
+    """
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
