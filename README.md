@@ -60,7 +60,7 @@ pages web.
 
 ---------------
 
-- La page 'Diversité des genres' vous montre un graphique qui compare
+- La page 'Diversité des genres' vous montre un graphique qui compare 
 le nombre total de femelles et de mâles.
 
 - La page 'Complications' vous montre un graphique qui compare
