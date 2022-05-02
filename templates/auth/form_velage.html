@@ -1,6 +1,11 @@
 <form action='#' method="post">
 
+    <p class="sstitle">Interface permettant d'afficher votre graphique</p>
+
     <div class="input-group">
+
+        <p>Choix des caractéristiques</p>
+
         <select name="Famille" id="Select_famille">
             <option value="all_families" selected>Toutes les familles</option>
             {% for famille in fam %}
@@ -27,7 +32,8 @@
             {% endfor %}
         </select>
 
-        <h1>Choix du graphique à montrer</h1>
+        <p>Choix du graphique à montrer</p>
+        
         <select name="Graphique" id="Select_graphique">
             <option value="velage">Nombre de vêlages par jours sur la période</option>
             <option value="lune">Graphique de naissance en fonction de la période de pleine lune</option>

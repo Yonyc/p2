@@ -6,14 +6,19 @@
 {% endblock %}
 
 {% block content %}
+
     {% for dat in data %}
         <script>
             // console.log({{dat.sexe}})
         </script>
     {% endfor %}
+
     <p class="sstitle">Nombre de mâles et de femelles</p>
+
     <canvas id="graphiqueGenre" width="300px" height="100px"></canvas>
+
     <script>
+
         var ctx = document.getElementById('graphiqueGenre').getContext('2d');
         // console.log('gender');
         var myChart = new Chart(ctx, {
@@ -28,5 +33,6 @@
                 }]
             }
         });
+        
     </script>
 {% endblock %}

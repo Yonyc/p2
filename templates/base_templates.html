@@ -9,9 +9,11 @@
     </head>
 
     <body>
+        <!-- Barre de navigation du site web: -->
         <nav>
             <h1>Ferme des 3 Chênes</h1>
-
+            
+            <!-- Liste des redirections vers les liens disponible sur le site: -->
             <ul>
                 <li><a href="{{ url_for('auth.index') }}">Accueil</a></li>
                 <li><a href="{{ url_for('auth.gender') }}">Diversité des genres</a></li>
@@ -20,18 +22,20 @@
             </ul>
         </nav>
 
+        <!-- Permet d'afficher les messages ou les erreurs relative à Flask, utile pour des cas de debug: -->
         <section class="content">
             <header>
                 {% block header %}{% endblock %}
             </header>
 
             {% for message in get_flashed_messages() %}
-            <div class="flash">
-              
-                {{ message }}
+                <div class="flash">
+                
+                    {{ message }}
 
-            </div>
+                </div>
             {% endfor %}
+
             {% block content %}{% endblock %}
         </section>
     </body>

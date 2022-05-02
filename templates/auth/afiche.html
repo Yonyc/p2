@@ -4,10 +4,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <h1 class="pageTitle">{% block title %}Affichage du Graphique{% endblock %}</h1>
 {% endblock %}
+
 {% block content %}
+
     {% autoescape off %}
-    {{form}}
+        {{form}}
     {% endautoescape %}
+
     <script>
         var select = document.getElementById('Select_famille');
         select.value = "{{Famille}}";
@@ -19,22 +22,29 @@
         select.value = "{{Ans}}";
         var select = document.getElementById('Select_graphique');
         select.value = "{{Graph_name}}";
-        
     </script>
-    <label>Famille : {{Famille_txt}}</label><br>
-    <label>Sexe : {{Sexe_txt}}</label><br>
-    <label>Année : {{Ans_txt}}</label><br>
-    <label>Mois : {{Mois_txt}}</label><br>
-    <label>Graphique : {{Graph_name}}</label><br>
+
+    <!-- Permet d'afficher les choix que l'utilisateur à voulu pour afficher son graphique: -->
+    <div class="graphChoices">
+        <label>Famille : {{Famille_txt}}</label><br>
+        <label>Sexe : {{Sexe_txt}}</label><br>
+        <label>Année : {{Ans_txt}}</label><br>
+        <label>Mois : {{Mois_txt}}</label><br>
+        <label>Graphique : {{Graph_name}}</label><br>
+    </div>
+
     {% if error %}
         <div><span style="color: red;">{{error}}</span></div>
-    {% else %}<canvas id="graph" width="300px" height="100px"></canvas>
+    {% else %}
+    <canvas id="graph" width="300px" height="100px"></canvas>
+        <!-- Gestion de l'affichage des graphiques en JavaScript: -->
         <script>
+            // Fonction permettant de savoir si une date donnée est une période de pleine lune ou non.
             function getMoonPhase(year, month, day){
                 /* 
-                 * Function from https://gist.github.com/endel/dfe6bb2fbe679781948c
-                 * Usage: getMoonPhase(): int moonPhase
-                 */
+                    * Function from https://gist.github.com/endel/dfe6bb2fbe679781948c
+                    * Usage: getMoonPhase(): int moonPhase
+                */
                 var c = e = jd = b = 0;
                 if (month < 3) {
                     year--;
@@ -72,10 +82,16 @@
 
                 return b;
             }
+
+            // Déclaration des variables
             var ctx = document.getElementById('graph').getContext('2d');
             let data = {{data|tojson}};
             let dataGraph = {}, graphType="line", scaleVelages = {}, scaleVelagesMales = {}, scaleVelagesFemales = {};;
+
+            // Switch permettant de gérer le type de graphique que souhaite afficher l'utilisateur:
             switch ("{{Graph_name}}") {
+                // 1er graphique : Afficher le nombre de vêlages par jour sur une période et donner l’option
+                // à l’utilisateur d’affiner sa recherche en ajouter un champ famille qui est optionnel.
                 case "velage":
                     data.forEach(el => {
                         let scale = Number("{{Ans}}" != "all_years" ? el[0].slice(3, 5) : el[0].slice(6));
@@ -90,7 +106,9 @@
                         labels: Object.keys(scaleVelages).length > 1 ? Object.keys(scaleVelages) : [Object.keys(scaleVelages)[0], Object.keys(scaleVelages)[0]] ,
                         datasets: []
                     };
+                    // Fonctionnalité supplémentaire : On donne à l'utilisateur de pouvoir également choisir le sexe à l'aide d'un Switch:
                     switch ("{{Sexe}}") {
+                        // Si l'utilisateur choisit le sexe M:
                         case "M":
                             dataGraph.datasets[dataGraph.datasets.length] = {
                                 label: "Mâles",
@@ -100,6 +118,7 @@
                                 tension: 0.1
                             }
                             break;
+                        // Si l'utilisateur choisit le sexe F:
                         case "F":
                             dataGraph.datasets[dataGraph.datasets.length] = {
                                 label: "Femelles",
@@ -109,6 +128,7 @@
                                 tension: 0.1
                             }
                             break;
+                        // Sinon, les deux:
                         default:
                             dataGraph.datasets[dataGraph.datasets.length] = {
                                 label: "Total",
@@ -120,6 +140,8 @@
                             break;
                     }
                     break;
+                // 2ème graphique : Afficher pour une année ou un mois, les animaux nés en période de pleine lune et ceux en nés en dehors. 
+                // Et donner l’option à l’utilisateur d’affiner sa recherche en ajouter un champ famille qui est optionnel.
                 case "lune":
                     let scaleVelagesLune = {}, scaleVelagesMalesLune = {}, scaleVelagesFemalesLune = {};
                     graphType="bar";
@@ -146,7 +168,9 @@
                         labels: Object.keys(scaleVelages),
                         datasets: []
                     };
+                    // Fonctionnalité supplémentaire : On donne à l'utilisateur de pouvoir également choisir le sexe à l'aide d'un Switch:
                     switch ("{{Sexe}}") {
+                        // Si l'utilisateur choisit le sexe M:
                         case "M":
                             dataGraph.datasets[dataGraph.datasets.length] = {
                                 label: "Mâles nés en lune",
@@ -163,6 +187,7 @@
                                 tension: 0.1
                             }
                             break;
+                        // Si l'utilisateur choisit le sexe F:
                         case "F":
                             dataGraph.datasets[dataGraph.datasets.length] = {
                                 label: "Femelles nés en lune",
@@ -179,6 +204,7 @@
                                 tension: 0.1
                             }
                             break;
+                        // Sinon, les deux:
                         default:
                             dataGraph.datasets[dataGraph.datasets.length] = {
                                 label: "Total nés en lune",
@@ -197,6 +223,9 @@
                             break;
                     }
                     break;
+                // 3ème graphique : Afficher la distribution des races dans la base de données. 
+                // On demande en entrée plusieurs races ainsi que le pourcentage minimum de ces dernières 
+                // et on affiche sur le graphe le nombre d’animaux respectant ces critères par race.
                 case "race":
                     let races = {};
                     graphType="bar";
@@ -209,7 +238,9 @@
                         labels: Object.keys(races),
                         datasets: []
                     };
+                    // Fonctionnalité supplémentaire : On donne à l'utilisateur de pouvoir également choisir le sexe à l'aide d'un Switch:
                     switch ("{{Sexe}}") {
+                        // Si l'utilisateur choisit le sexe M:
                         case "M":
                             dataGraph.datasets[dataGraph.datasets.length] = {
                                 label: "Mâles",
@@ -219,6 +250,7 @@
                                 tension: 0.1
                             }
                             break;
+                        // Si l'utilisateur choisit le sexe F:
                         case "F":
                             dataGraph.datasets[dataGraph.datasets.length] = {
                                 label: "Femelles",
@@ -228,6 +260,7 @@
                                 tension: 0.1
                             }
                             break;
+                        // Sinon, les deux:
                         default:
                             dataGraph.datasets[dataGraph.datasets.length] = {
                                 label: "Total",
@@ -252,12 +285,12 @@
                     };
                     break;
             }
+            // Affichage du graphique au moyen de Chart.JS:
             var myChart = new Chart(ctx, {
                 type: graphType,
                 data: dataGraph
             });
         </script>
     {% endif %}
-    
 
 {% endblock %}

@@ -6,22 +6,23 @@
 {% endblock %}
 
 {% block content %}
-<p class="sstitle">PROJET 2 - VINCENT - GROUPE 3</p>
+    <p class="sstitle">PROJET 2 - VINCENT - GROUPE 3</p>
 
-<p>Bienvenue sur le site de la Ferme des 3 Chênes du groupe 3 de l'Assistant Vincent Branders.</p>
+    <p>Bienvenue sur le site de la Ferme des 3 Chênes du groupe 3 de l'Assistant Vincent Branders.</p>
 
-<p>Vous y retrouverez plusieurs fonctionnalités que nous allons vous expliquer sur cette page d'accueil.</p>
+    <p>Vous y retrouverez plusieurs fonctionnalités que nous allons vous expliquer sur cette page d'accueil.</p>
 
-<p>Vous trouverez en haut à droite la barre de navigation, celle-ci vous permet d'accéder facilement et rapidement aux pages du site:</p>
+    <p>Vous trouverez en haut à droite la barre de navigation, celle-ci vous permet d'accéder facilement et rapidement aux pages du site:</p>
 
-<ul>
-    <li>La page 'Diversité des genres' vous montre un graphique qui comparele nombre total de femelles et de mâles.</li>
-    <li>La page 'Complications' vous montre un graphique qui compare toutes les complications et vous montre donc celles qui sont les plus récurrentes</li>
-    <li>La page 'Graphiques' vous propose une interface et vous permet de former les graphiques des consignes du projet.</li>
-</ul>
+    <ul>
+        <li>La page 'Diversité des genres' vous montre un graphique qui compare le nombre total de femelles et de mâles.</li>
+        <li>La page 'Complications' vous montre un graphique qui compare toutes les complications et vous montre donc celles qui sont les plus récurrentes</li>
+        <li>La page 'Graphiques' vous propose une interface et vous permet de former les graphiques des consignes du projet.</li>
+    </ul>
 
-<div class="homeimg">
-    <img id="img1" src="{{ url_for('static', filename='troischenes1.jpg') }}" alt="troischenes1" height="500px" width=""> </img>
-    <img id="img2" src="{{ url_for('static', filename='troischenes3.jpg') }}" alt="troischenes3" height="500px" width="283"> </img>
-</div>
+    <!-- Ces images proviennent du site de la ferme des 3 chênes publiés sur le site du Professeur du cours -->
+    <div class="homeimg">
+        <img id="img1" src="{{ url_for('static', filename='troischenes1.jpg') }}" alt="troischenes1" height="500px" width=""> </img>
+        <img id="img2" src="{{ url_for('static', filename='troischenes3.jpg') }}" alt="troischenes3" height="500px" width="283"> </img>
+    </div>
 {% endblock %}
