@@ -2,7 +2,7 @@
 
 {% block header %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
-  <h1>{% block title %}Genre{% endblock %}</h1>
+  <h1>{% block title %}Diversité des Genres{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
 
     </script>
   {% endfor %}
-    <label>Number male-female</label>
+    <label>Nombre de mâles et de femelles</label>
     <canvas id="graphique" width="300px" height="100px"></canvas>
     <script>
       var ctx = document.getElementById('graphique').getContext('2d');
