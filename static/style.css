@@ -74,7 +74,8 @@ input[type=submit] {
     margin-bottom: 20px;
 }
 .submitgraph{
-    margin-top: 25px;
+    margin-top: 15px;
+    padding : 10px;
 }
 .content { 
     padding: 0 1rem 1rem; 
@@ -133,8 +134,12 @@ input[type=submit] {
     resize: vertical; 
 }
 .homeimg{
-    max-height : 500px;
+    max-height: 500px;
     text-align: center;
+}
+.graphChoices{
+    text-align: center;
+    margin-bottom : 15px;
 }
 
 
@@ -145,8 +150,8 @@ input[type=submit] {
 }
 
 #img1{
-    margin-right : 10px;
+    margin-right: 10px;
 }
 #img2{
-    margin-left : 10px;
+    margin-left: 10px;
 }
