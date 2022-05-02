@@ -19,30 +19,62 @@
         select.value = "{{Ans}}";
         
     </script>
-    <label>Famille : {{Famille}}</label><br>
+    <label>Famille : {{Famille_txt}}</label><br>
     <label>Sexe : {{Sexe_txt}}</label><br>
-    <label>Année : {{Ans}}</label><br>
+    <label>Année : {{Ans_txt}}</label><br>
     <label>Mois : {{Mois_txt}}</label><br>
     <label>Graphique : {{Graph_name}}</label><br>
     {% if error %}
         <div><span style="color: red;">{{error}}</span></div>
     {% else %}<canvas id="graph" width="300px" height="100px"></canvas>
         <script>
+            const rangexy = (start, end) => Array.from({length: (end+1 - start)}, (v, k) => k + start);
             var ctx = document.getElementById('graph').getContext('2d');
-            // console.log('gender');
             let data = {{data|tojson}};
-            console.log(data);
+            let yearVelages = {};
+            data.forEach(el => {
+                let year = Number(el[0].slice(6));
+                if (Object.keys(yearVelages).includes(year.toString())) {
+                    yearVelages[year] += 1;
+                } else {
+                    yearVelages[year] = 1;
+                }
+            });
+            let minYear = Math.min.apply(Math, Object.keys(yearVelages)), maxYear = Math.max.apply(Math, Object.keys(yearVelages));
+            let dataG = Object.from(rangexy(minYear, maxYear));
+            console
+            let dataGraph = {};
+            switch ("{{Graph_name}}") {
+                case "velage":
+                    console.log(yearVelages)
+                    dataGraph = {
+                        labels: rangexy(minYear, maxYear),
+                        datasets: [{
+                            label: "Velages",
+                            data: Object.values(yearVelages),
+                            fill: false,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    };
+                    console.log(dataGraph)
+                    break;
+                default:
+                    dataGraph = {
+                        labels: ["Janvier", "Février", "Mars", "Avril", "May", "Juin", "Juillet"],
+                        datasets: [{
+                            label: 'My First Dataset',
+                            data: [65, 59, 80, 81, 56, 55, 40],
+                            fill: false,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    };
+                    break;
+            }
             var myChart = new Chart(ctx, {
                 type: 'line',
-                data: { 
-                    labels: [],
-                    datasets: [{
-                        label: 'Number',
-                        backgroundColor: ['rgb(54, 162, 235)','rgb(255, 99, 132)'],
-                        hoverOffset: 1,
-                        data: [{{Male}}, {{Female}}]
-                    }]
-                }
+                data: dataGraph
             });
         </script>
     {% endif %}

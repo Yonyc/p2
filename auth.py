@@ -166,4 +166,4 @@ def affich_graph(Famille,Sexe,Mois,Ans,Graph):
         except Exception as e:
             err="Request error: " + req  + "<br>" + str(e) + "<br>"
 
-    return render_template('auth/afiche.html', data=data, error=err, Famille=Famille, Sexe=Sexe, Sexe_txt=sexes[Sexe], Ans=Ans, Mois=Mois, Mois_txt=months[int(Mois)], Graph_name=Graph, form=render_template('auth/form_velage.html', annee = annee, fam = fam, months=months, sexs=sexes, graph_name=Graph))
+    return render_template('auth/afiche.html', data=data, error=err, Famille=Famille, Famille_txt=("Toutes les familles" if Famille == "all_families" else Famille), Sexe=Sexe, Sexe_txt=sexes[Sexe], Ans=Ans, Ans_txt=("Toutes les années" if Ans=="all_years" else Ans), Mois=Mois, Mois_txt=months[int(Mois)], Graph_name=Graph, form=render_template('auth/form_velage.html', annee = annee, fam = fam, months=months, sexs=sexes, graph_name=Graph))
