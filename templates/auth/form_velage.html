@@ -13,6 +13,13 @@
             {% endfor %}
         </select>
 
+        <select name="Annee" id="Select_races">
+            <option value="all_races" selected>Toutes les races</option>
+                <option value="Holstein">Holstein</option>
+                <option value="Blanc Bleu Belge">Blanc Bleu Belge</option>
+                <option value="Jersey">Jersey</option>
+        </select>
+
         <select name="Sexe" id="Select_sexe">
             {% for nb, sex in sexs.items() %}
                 <option value="{{nb}}">{{sex}}</option>
