@@ -53,7 +53,7 @@ Le dossier 'db' contient toutes les requêtes permettant de former
 la base de données et 'instance' contient le fichier sqlite.
 
 Le dossier 'static' contient le fichier CSS qui gère l'aspect visuel
-du site web.
+du site web ainsi que les images.
 
 Le dossier 'templates' contient les fichiers html qui affiche les
 pages web.
@@ -75,7 +75,7 @@ GitHub
 ----------------------------------------------------------------
 
 Notre projet est d'ailleurs sur Github, nous l'avons utilisé du début à la fin. Il est rendu public pour vous
-permettre de voir les commits (65 au total).
+permettre de voir les commits (73 au total).
 
 Lien du repo GitHub : https://github.com/Yonyc/p2
 Lien des commits : https://github.com/Yonyc/p2/commits/main
