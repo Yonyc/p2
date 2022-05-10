@@ -69,3 +69,13 @@ les plus récurrentes
 
 - La page 'Graphiques' vous propose une interface et vous permet
 de former les graphiques des consignes du projet.
+
+-----------------------------------------------------------------
+GitHub
+----------------------------------------------------------------
+
+Notre projet est d'ailleurs sur Github, nous l'avons utilisé du début à la fin. Il est rendu public pour vous
+permettre de voir les commits (65 au total).
+
+Lien du repo GitHub : https://github.com/Yonyc/p2
+Lien des commits : https://github.com/Yonyc/p2/commits/main
