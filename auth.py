@@ -72,7 +72,7 @@ def index():
 def gender():
     """
     Fonction permettant de récupérer les données et de faire la requête SQL nous
-    permettant d'afficher un graphique sur la diversité des genres. Ceci est notre 
+    permettant d'afficher un graphique sur la diversité des sexes. Ceci est notre 
     première fonctionnalité supplémentaire.
     """
     db = get_db()
